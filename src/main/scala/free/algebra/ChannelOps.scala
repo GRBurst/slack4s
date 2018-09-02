@@ -27,7 +27,7 @@ final case class ChannelHistory(
   latest: Option[String] = None,
   oldest: Option[String] = None,
   unreads: Option[Boolean] = None,
-  ) extends ChannelOp[SlackResponse[HistoryChunk]]
+  ) extends ChannelOp[SlackResponse[ChannelHistory]]
 
 final case class ChannelInfo(
   token: OAuthToken,
