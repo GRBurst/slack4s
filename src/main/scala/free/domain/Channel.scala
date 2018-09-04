@@ -4,13 +4,7 @@ package slack4s.free.domain
  * This is the channel domain which includes channel models and return types
  */
 
-// TODO: tag types
-type ChannelId = String
-type UserId = String
-
-type SlackTimestamp = String
-type UnixTimestamp = Long
-
+import slack4s.util.TypeDsl._
 case class Channel (
   id: String,
   name: String,
@@ -34,6 +28,8 @@ case class Channel (
   unread_count: Option[Int],
   unread_count_display: Option[Int]
 )
+
+case class LimitedChannel()
 
 case class ChannelProperty (
   value: String,
@@ -64,3 +60,7 @@ case class BotMessage(
   bot_id: String,
   username: Option[String],
   ) extends HistoryMessage
+
+case class RepliesChunk()
+
+

@@ -11,7 +11,11 @@
 
 package slack4s.api
 
-class Channels[C, M[_]]() = {
+import slack4s.slack4s.SlackResponse
+import slack4s.free.domain._
+import slack4s.util.TypeDsl._
+
+class Channels[C, M[_]]() {
   type ChannelId = String
   type UserId = String
 
@@ -23,7 +27,7 @@ class Channels[C, M[_]]() = {
    * @param channel Id of the channel.
    * @return A boolean SlackResponse whether the action was successful.
    */
-  def archieve(
+  def archive(
     token: OAuthToken,
     channel: ChannelId,
     ): M[SlackResponse[Boolean]] = ???
@@ -61,12 +65,12 @@ class Channels[C, M[_]]() = {
   def history(
     token: OAuthToken,
     channel: ChannelId,
-    count: Option[Int] = None
+    count: Option[Int] = None,
     inclusive: Option[Int] = None,
     latest: Option[String] = None,
     oldest: Option[String] = None,
     unreads: Option[Boolean] = None,
-    ): M[SlackResponse[HistoryChunk]] = ???
+    ): M[SlackResponse[ChannelHistory]] = ???
 
   /**
    * Gets information about a channel.

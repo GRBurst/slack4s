@@ -1,12 +1,17 @@
 package slack4s.free.algebra
 
+import slack4s.util.TypeDsl._
+import slack4s.free.domain._
+import slack4s.slack4s.SlackResponse
+
 import cats.InjectK
 import cats.free.Free
+
 
 /**
  * Channels ADT
  */
-sealed treat ChannelOp[A]
+sealed trait ChannelOp[A]
 
 final case class ArchiveChannel(
   token: OAuthToken,
@@ -22,7 +27,7 @@ final case class CreateChannel(
 final case class ChannelHistory(
   token: OAuthToken,
   channel: ChannelId,
-  count: Option[Int] = None
+  count: Option[Int] = None,
   inclusive: Option[Int] = None,
   latest: Option[String] = None,
   oldest: Option[String] = None,
@@ -106,166 +111,166 @@ final case class UnarchiveChannel(
 class ChannelOps[F[_]](implicit I: InjectK[ChannelOp, F]) {
 
   def archiveChannel(
-    token: OAuthToken,
-    channel: ChannelId,
-    ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](
-      ArchiveChannel(
-        token,
-        channel,
-      )
+                      token: OAuthToken,
+                      channel: ChannelId,
+                    ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](
+    ArchiveChannel(
+      token,
+      channel,
     )
+  )
 
-    def createChannel(
-      token: OAuthToken,
-      name: String,
-      validate: Option[Boolean] = None,
-      ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](
-        CreateChannel(
-          token,
-          name,
-          validate,
-          )
-        )
+  def createChannel(
+                     token: OAuthToken,
+                     name: String,
+                     validate: Option[Boolean] = None,
+                   ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](
+    CreateChannel(
+      token,
+      name,
+      validate,
+    )
+  )
 
-      def channelHistory(
-        token: OAuthToken,
-        channel: ChannelId,
-        count: Option[Int] = None,
-        inclusive: Option[Int] = None,
-        latest: Option[String] = None,
-        oldest: Option[String] = None,
-        unreads: Option[Boolean] = None,
-        ): Free[F, SlackResponse[HistoryChunk]] = Free.inject[ChannelOp, F](ChannelHistory(
-          token,
-          channel,
-          count
-          inclusive,
-          latest,
-          oldest,
-          unreads,
-          ))
+  def channelHistory(
+                      token: OAuthToken,
+                      channel: ChannelId,
+                      count: Option[Int] = None,
+                      inclusive: Option[Int] = None,
+                      latest: Option[String] = None,
+                      oldest: Option[String] = None,
+                      unreads: Option[Boolean] = None,
+                    ): Free[F, SlackResponse[HistoryChunk]] = Free.inject[ChannelOp, F](ChannelHistory(
+    token,
+    channel,
+    count
+      inclusive,
+    latest,
+    oldest,
+    unreads,
+  ))
 
-        def channelInfo(
-          token: OAuthToken,
-          channel: ChannelId,
-          includeLocale: Option[Boolean] = None,
-          ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](ChannelInfo(
-            token,
-            channel,
-            includeLocale,
-            ))
+  def channelInfo(
+                   token: OAuthToken,
+                   channel: ChannelId,
+                   includeLocale: Option[Boolean] = None,
+                 ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](ChannelInfo(
+    token,
+    channel,
+    includeLocale,
+  ))
 
-          def channelInvite(
-            token: OAuthToken,
-            channel: ChannelId,
-            user: UserId,
-            ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](ChannelInvite(
-              token,
-              channel,
-              user,
-              ))
+  def channelInvite(
+                     token: OAuthToken,
+                     channel: ChannelId,
+                     user: UserId,
+                   ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](ChannelInvite(
+    token,
+    channel,
+    user,
+  ))
 
-            def channelJoin(
-              token: OAuthToken,
-              name: String,
-              validate: Option[Boolean] = None,
-              ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](ChannelJoin(
-                token,
-                name,
-                validate,
-                ))
+  def channelJoin(
+                   token: OAuthToken,
+                   name: String,
+                   validate: Option[Boolean] = None,
+                 ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](ChannelJoin(
+    token,
+    name,
+    validate,
+  ))
 
-              def channelKick(
-                token: OAuthToken,
-                channel: ChannelId,
-                user: UserId,
-                ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](ChannelKick(
-                  token,
-                  channel,
-                  user,
-                  ))
+  def channelKick(
+                   token: OAuthToken,
+                   channel: ChannelId,
+                   user: UserId,
+                 ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](ChannelKick(
+    token,
+    channel,
+    user,
+  ))
 
-                def leaveChannel(
-                  token: OAuthToken,
-                  channel: ChannelId,
+  def leaveChannel(
+                    token: OAuthToken,
+                    channel: ChannelId,
                   ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](LeaveChannel(
-                    token,
-                    channel,
-                    ))
+    token,
+    channel,
+  ))
 
-                  def listChannels(
+  def listChannels(
                     token: OAuthToken,
                     cursor: Option[String] = None,
                     excludeArchived: Option[Boolean] = None,
                     excludeMembers: Option[Boolean] = None,
                     limit: Option[Int] = None,
-                    ): Free[F, SlackResponse[List[LimitedChannel]]] = Free.inject[ChannelOp, F](ListChannels(
-                      token,
-                      cursor,
-                      excludeArchived,
-                      excludeMembers,
-                      limit,
-                      ))
+                  ): Free[F, SlackResponse[List[LimitedChannel]]] = Free.inject[ChannelOp, F](ListChannels(
+    token,
+    cursor,
+    excludeArchived,
+    excludeMembers,
+    limit,
+  ))
 
-                    def markChannel(
+  def markChannel(
+                   token: OAuthToken,
+                   channel: ChannelId,
+                   ts: UnixTimestamp,
+                 ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](MarkChannel(
+    token,
+    channel,
+    ts,
+  ))
+
+  def renameChannel(
+                     token: OAuthToken,
+                     channel: ChannelId,
+                     name: String,
+                     validate: Option[Boolean] = None,
+                   ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](RenameChannel(
+    token,
+    channel,
+    name,
+    validate,
+  ))
+
+  def channelReplies(
                       token: OAuthToken,
                       channel: ChannelId,
-                      ts: UnixTimestamp,
-                      ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](MarkChannel(
-                        token,
-                        channel,
-                        ts,
-                        ))
+                      threadTs: UnixTimestamp,
+                    ): Free[F, SlackResponse[Seq[RepliesChunk]]] = Free.inject[ChannelOp, F](ChannelReplies(
+    token,
+    channel,
+    threadTs,
+  ))
 
-                      def renameChannel(
+  def channelPurpose(
+                      token: OAuthToken,
+                      channel: ChannelId,
+                      purpose: String,
+                    ): Free[F, SlackResponse[String]] = Free.inject[ChannelOp, F](ChannelPurpose(
+    token,
+    channel,
+    purpose,
+  ))
+
+  def channelTopic(
+                    token: OAuthToken,
+                    channel: ChannelId,
+                    topic: String,
+                  ): Free[F, SlackResponse[String]] = Free.inject[ChannelOp, F](ChannelTopic(
+    token,
+    channel,
+    topic,
+  ))
+
+  def unarchiveChannel(
                         token: OAuthToken,
                         channel: ChannelId,
-                        name: String,
-                        validate: Option[Boolean] = None,
-                        ): Free[F, SlackResponse[Channel]] = Free.inject[ChannelOp, F](RenameChannel(
-                          token,
-                          channel,
-                          name,
-                          validate,
-                          ))
-
-                        def channelReplies(
-                          token: OAuthToken,
-                          channel: ChannelId,
-                          threadTs: UnixTimestamp,
-                          ): Free[F, SlackResponse[List[RepliesChunk]]] = Free.inject[ChannelOp, F](ChannelReplies(
-                            token,
-                            channel,
-                            threadTs,
-                            ))
-
-                          def channelPurpose(
-                            token: OAuthToken,
-                            channel: ChannelId,
-                            purpose: String,
-                            ): Free[F, SlackResponse[String]] = Free.inject[ChannelOp, F](ChannelPurpose(
-                              token,
-                              channel,
-                              purpose,
-                              ))
-
-                            def channelTopic(
-                              token: OAuthToken,
-                              channel: ChannelId,
-                              topic: String,
-                              ): Free[F, SlackResponse[String]] = Free.inject[ChannelOp, F](ChannelTopic(
-                                token,
-                                channel,
-                                topic,
-                                ))
-
-                              def unarchiveChannel(
-                                token: OAuthToken,
-                                channel: ChannelId,
-                                ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](UnarchiveChannel(
-                                  token,
-                                  channel,
-                                  ))
+                      ): Free[F, SlackResponse[Boolean]] = Free.inject[ChannelOp, F](UnarchiveChannel(
+    token,
+    channel,
+  ))
 
 
 

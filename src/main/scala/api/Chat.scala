@@ -1,10 +1,13 @@
 package slack4s.api
 
+import slack4s.slack4s.SlackResponse
+import slack4s.util.TypeDsl._
+
 sealed trait ParseOption
 case object ParseFull extends ParseOption
 case object ParseNone extends ParseOption
 
-class Chat[C, M[_]]() = {
+class Chat[C, M[_]]() {
   type ChannelId = String
 
   // Tuple that uniquely identifies a message
