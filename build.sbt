@@ -14,8 +14,11 @@ scalacOptions ++=
     "-Ywarn-infer-any" ::
     "-Ywarn-nullary-override" ::
     "-Ywarn-nullary-unit" ::
+      "-Ypartial-unification" ::
     Nil
 
 libraryDependencies ++= Seq(
-  "org.scalatest"   %% "scalatest"    % "3.0.5"   % "test",
+  "org.scalatest" %% "scalatest" % "3.0.5" % "test",
+  "org.typelevel" %% "cats-core" % "1.2.0",
+  "org.typelevel" %% "cats-free" % "1.2.0",
 )
