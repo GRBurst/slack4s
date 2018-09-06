@@ -11,13 +11,24 @@
 
 package slack4s.api
 
-import slack4s.slack4s.SlackResponse
+import cats._, cats.effect._, cats.implicits._
+
+import slack4s.slack4s.{OAuthToken, SlackResponse}
 import slack4s.free.domain._
 import slack4s.util.TypeDsl._
+import org.http4s.client.blaze._
+import org.http4s.client._
 
 class Channels[C, M[_]]() {
   type ChannelId = String
   type UserId = String
+
+  //TODO: read documentation of http4s
+//  val http1Client: fs2.Stream[IO, Client[IO]] = Http1Client.stream[IO](BlazeClientConfig.defaultConfig).flatMap{ client =>
+//    fs2.Stream.eval {
+//
+//    }
+//  }
 
   /**
    * Archives a channel.
