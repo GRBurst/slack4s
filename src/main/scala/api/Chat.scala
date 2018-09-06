@@ -1,6 +1,6 @@
 package slack4s.api
 
-import slack4s.slack4s.SlackResponse
+import slack4s.slack4s.{OAuthToken, SlackResponse}
 import slack4s.util.TypeDsl._
 
 sealed trait ParseOption
